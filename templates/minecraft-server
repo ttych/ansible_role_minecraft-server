@@ -1,0 +1,14 @@
+#!/bin/sh
+
+SCRIPT_NAME="${0##*/}"
+SCRIPT_RPATH="${0%$SCRIPT_NAME}"
+SCRIPT_PATH=`cd "${SCRIPT_RPATH:-.}" && pwd`
+
+
+if [ "$(whoami)" != "minecraft" ]; then
+    echo "$0 must be run as minecraft" 1>&2
+    exit 1
+fi
+
+cd "$SCRIPT_PATH" &&
+    java -Xmx1024M -Xms1024M -jar minecraft_server.{{ minecraft_server_version }}.jar nogui

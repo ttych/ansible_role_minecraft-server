@@ -1,0 +1,28 @@
+---
+
+- block:
+    - include: context.yml
+
+    - include: accounts.yml
+      vars: {
+        accounts_groups: "{{ minecraft_server_groups }}",
+        accounts_users: "{{ minecraft_server_users }}"
+      }
+
+    - include: workspace.yml
+      vars:
+        workspace_directories: "{{ minecraft_server_directories }}"
+
+    - include: install_packages.yml
+      vars: {
+        packages: "{{ minecraft_server_packages }}",
+        services: []
+      }
+
+    - include: setup_minecraft_server.yml
+
+  when: want_minecraft_server
+
+- name: "set has_minecraft_server to {{ want_minecraft_server }}"
+  set_fact:
+    has_minecraft_server: "{{ want_minecraft_server }}"

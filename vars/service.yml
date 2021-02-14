@@ -1,0 +1,4 @@
+---
+
+minecraft_server_dir: "{{ service_dir }}/minecraft_server"
+minecraft_server_home: "{{ minecraft_server_dir }}/minecraft"

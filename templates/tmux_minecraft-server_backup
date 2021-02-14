@@ -1,0 +1,10 @@
+#!/bin/sh
+
+printf "[$(date)] Starting backup..."
+
+tmux send -t "minecraft_{{ minecraft_server_instance }}" /save-off ENTER
+
+cd "{{ minecraft_server_instance_dir }}" &&
+    tar -czvf world-`date +%m%d%y_%H_%M_%S`.tar.gz world
+
+tmux send -t "minecraft_{{ minecraft_server_instance }}" /save-on ENTER

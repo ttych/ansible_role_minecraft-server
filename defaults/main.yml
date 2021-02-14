@@ -1,0 +1,40 @@
+---
+
+want_minecraft_server: no
+
+minecraft_server_packages:
+  - openjdk8
+
+minecraft_server_user: minecraft
+minecraft_server_group: minecraft
+minecraft_server_home: "/home/{{ minecraft_server_user }}"
+minecraft_server_dir: "{{ minecraft_server_home }}"
+minecraft_server_groups:
+  - name: "{{ minecraft_server_group }}"
+    gid: 3301
+minecraft_server_users:
+  - name: "{{ minecraft_server_user }}"
+    comment: "{{ minecraft_server_user }}"
+    group: "{{ minecraft_server_group }}"
+    home: "{{ minecraft_server_home }}"
+    shell: /bin/sh
+    uid: 3301
+    home_mode: '0700'
+    password: '*'
+
+minecraft_server_instance: 1
+minecraft_server_instance_dir: "{{ minecraft_server_dir }}/{{ minecraft_server_instance }}"
+
+minecraft_server_directories:
+  - { path: "{{ minecraft_server_home }}", owner: "{{ minecraft_server_user }}", group: "{{ minecraft_server_group }}", mode: "0700" }
+  -  { path: "{{ minecraft_server_instance_dir }}", owner: "{{ minecraft_server_user }}", group: "{{ minecraft_server_group }}", mode: "0700" }
+  -  { path: "{{ minecraft_server_instance_dir }}/debug", owner: "{{ minecraft_server_user }}", group: "{{ minecraft_server_group }}", mode: "0755" }
+  -  { path: "{{ minecraft_server_instance_dir }}/logs", owner: "{{ minecraft_server_user }}", group: "{{ minecraft_server_group }}", mode: "0755" }
+  -  { path: "{{ minecraft_server_instance_dir }}/world", owner: "{{ minecraft_server_user }}", group: "{{ minecraft_server_group }}", mode: "0755" }
+
+minecraft_server_jars:
+  1.16.5: https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
+
+minecraft_server_version: 1.16.5
+
+root_group: root

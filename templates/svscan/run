@@ -1,0 +1,11 @@
+#!/bin/sh
+
+exec 2>&1
+
+set -e
+
+cd "{{ minecraft_server_instance_dir }}"
+
+exec setuidgid -s "{{ minecraft_server_user }}" \
+     env HOME="{{ minecraft_server_home }}" \
+     fghack "{{ minecraft_server_instance_dir }}/tmux_minecraft-server_start"

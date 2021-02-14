@@ -1,0 +1,7 @@
+#!/bin/sh
+
+tmux send -t "minecraft_{{ minecraft_server_instance }}" /save-all ENTER
+tmux send -t "minecraft_{{ minecraft_server_instance }}" /stop ENTER
+
+# echo "Killing minecraft session"
+# tmux kill-session -t "minecraft_{{ minecraft_server_instance }}"
