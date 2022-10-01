@@ -11,4 +11,4 @@ if [ "$(whoami)" != "minecraft" ]; then
 fi
 
 cd "$SCRIPT_PATH" &&
-    java -Xmx1024M -Xms1024M -jar minecraft_server.{{ minecraft_server_version }}.jar nogui
+    {{ minecraft_java_dir }}/bin/java -Xmx4G -Xms4G -jar minecraft_server.{{ minecraft_server_version }}.jar nogui

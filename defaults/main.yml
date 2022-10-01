@@ -32,9 +32,15 @@ minecraft_server_directories:
   -  { path: "{{ minecraft_server_instance_dir }}/logs", owner: "{{ minecraft_server_user }}", group: "{{ minecraft_server_group }}", mode: "0755" }
   -  { path: "{{ minecraft_server_instance_dir }}/world", owner: "{{ minecraft_server_user }}", group: "{{ minecraft_server_group }}", mode: "0755" }
 
+# from https://www.minecraft.net/en-us/download/server
 minecraft_server_jars:
   1.16.5: https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
+  1.19.2: https://piston-data.mojang.com/v1/objects/f69c284232d7c7580bd89a5a4931c3581eae1378/server.jar
+minecraft_server_version: 1.19.2
+minecraft_java_pkg: openjdk-18
+minecraft_java_dir: /usr/local/
 
-minecraft_server_version: 1.16.5
+minecraft_server_packages:
+  - "{{ minecraft_java_pkg }}"
 
 root_group: root

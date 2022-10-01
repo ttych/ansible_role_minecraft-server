@@ -1,3 +1,6 @@
 ---
 
 root_group: wheel
+
+minecraft_java_pkg: openjdk18
+minecraft_java_dir: /usr/local/openjdk18
