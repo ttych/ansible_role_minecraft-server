@@ -1,0 +1,93 @@
+---
+
+# from: https://www.youtube.com/watch?v=nJWIo9LgQzA
+
+- name: deploy paper jar
+  get_url:
+    url: "{{ minecraft_paper_url }}"
+    dest: "{{ minecraft_server_instance_dir }}/{{ minecraft_paper_name }}"
+    mode: 0444
+    owner: "{{ minecraft_server_user }}"
+    group: "{{ minecraft_server_group }}"
+
+- name: deploy eula.txt
+  copy:
+    src: eula.txt
+    dest: "{{ minecraft_server_instance_dir }}/eula.txt"
+    owner: "{{ minecraft_server_user }}"
+    group: "{{ minecraft_server_group }}"
+    mode: 0644
+
+- name: deploy Geyser-Spigot plugin
+  get_url:
+    url: "{{ minecraft_geyser_spigot_url }}"
+    dest: "{{ minecraft_server_instance_dir }}/plugins/{{ minecraft_geyser_spigot_name }}"
+    mode: 0444
+    owner: "{{ minecraft_server_user }}"
+    group: "{{ minecraft_server_group }}"
+
+- name: deploy floodgate-spigot plugin
+  get_url:
+    url: "{{ minecraft_floodgate_spigot_url }}"
+    dest: "{{ minecraft_server_instance_dir }}/plugins/{{ minecraft_floodgate_spigot_name }}"
+    mode: 0444
+    owner: "{{ minecraft_server_user }}"
+    group: "{{ minecraft_server_group }}"
+
+- name: deploy minecraft-server script
+  template:
+    src: minecraft-cross-server
+    dest: "{{ minecraft_server_instance_dir }}/minecraft-server"
+    owner: "{{ minecraft_server_user }}"
+    group: "{{ minecraft_server_group }}"
+    mode: 0755
+
+- name: stat server.properties
+  stat:
+    path: "{{ minecraft_server_properties }}"
+  register: t_minecraft_stat_server_properties
+
+- name: deploy config files
+  command:
+    cmd: "{{ minecraft_server_instance_dir }}/minecraft-server --initSettings"
+  changed_when: no
+  become: yes
+  become_user: "{{ minecraft_server_user }}"
+  when: not t_minecraft_stat_server_properties.stat.exists
+
+- name: update server.properties content
+  lineinfile:
+    path: "{{ minecraft_server_properties }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop: "{{ minecraft_server_properties_settings }}"
+
+- name: plugins directories
+  file:
+    path: "{{ minecraft_server_instance_dir }}/plugins/{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ minecraft_server_user }}"
+    group: "{{ minecraft_server_group }}"
+  loop:
+    - Geyser-Spigot
+    - floodgate
+
+- name: link foodgate key into Geyser-Spigot
+  file:
+    src: "../floodgate/key.pem"
+    dest: "{{ minecraft_server_instance_dir }}/plugins/Geyser-Spigot/key.pem"
+    state: link
+    force: yes
+
+- name: deploy tmux minecraft-server scripts
+  template:
+    src: "{{ item }}"
+    dest: "{{ minecraft_server_instance_dir }}/{{ item }}"
+    owner: "{{ minecraft_server_user }}"
+    group: "{{ minecraft_server_group }}"
+    mode: 0755
+  loop:
+    - tmux_minecraft-server_start
+    - tmux_minecraft-server_stop
+    - tmux_minecraft-server_backup

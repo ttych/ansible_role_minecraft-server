@@ -2,9 +2,6 @@
 
 want_minecraft_server: no
 
-minecraft_server_packages:
-  - openjdk8
-
 minecraft_server_user: minecraft
 minecraft_server_group: minecraft
 minecraft_server_home: "/home/{{ minecraft_server_user }}"
@@ -22,7 +19,10 @@ minecraft_server_users:
     home_mode: '0700'
     password: '*'
 
-minecraft_server_instance: 1
+minecraft_mode: 'cross'
+
+minecraft_server_instance_id: 1
+minecraft_server_instance: "instance_{{ minecraft_server_instance_id }}"
 minecraft_server_instance_dir: "{{ minecraft_server_dir }}/{{ minecraft_server_instance }}"
 
 minecraft_server_directories:
@@ -31,16 +31,43 @@ minecraft_server_directories:
   -  { path: "{{ minecraft_server_instance_dir }}/debug", owner: "{{ minecraft_server_user }}", group: "{{ minecraft_server_group }}", mode: "0755" }
   -  { path: "{{ minecraft_server_instance_dir }}/logs", owner: "{{ minecraft_server_user }}", group: "{{ minecraft_server_group }}", mode: "0755" }
   -  { path: "{{ minecraft_server_instance_dir }}/world", owner: "{{ minecraft_server_user }}", group: "{{ minecraft_server_group }}", mode: "0755" }
+  -  { path: "{{ minecraft_server_instance_dir }}/plugins", owner: "{{ minecraft_server_user }}", group: "{{ minecraft_server_group }}", mode: "0755" }
 
 # from https://www.minecraft.net/en-us/download/server
 minecraft_server_jars:
   1.16.5: https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar
   1.19.2: https://piston-data.mojang.com/v1/objects/f69c284232d7c7580bd89a5a4931c3581eae1378/server.jar
-minecraft_server_version: 1.19.2
+  1.20.2: https://piston-data.mojang.com/v1/objects/5b868151bd02b41319f54c8d4061b8cae84e665c/server.jar
+
+minecraft_server_version: 1.20.2
+
 minecraft_java_pkg: openjdk-18
 minecraft_java_dir: /usr/local/
 
+minecraft_paper_build: 260
+minecraft_paper_url: "https://api.papermc.io/v2/projects/paper/versions/{{ minecraft_server_version }}/builds/{{ minecraft_paper_build }}/downloads/paper-{{ minecraft_server_version }}-{{ minecraft_paper_build }}.jar"
+minecraft_paper_name: "{{ minecraft_paper_url | split('/') | last }}"
+
+minecraft_geyser_spigot_url: https://ci.opencollab.dev//job/GeyserMC/job/Geyser/job/master/lastSuccessfulBuild/artifact/bootstrap/spigot/build/libs/Geyser-Spigot.jar
+minecraft_geyser_spigot_name: "{{ minecraft_geyser_spigot_url | split('/') | last }}"
+minecraft_floodgate_spigot_url: https://ci.opencollab.dev/job/GeyserMC/job/Floodgate/job/master/lastSuccessfulBuild/artifact/spigot/build/libs/floodgate-spigot.jar
+minecraft_floodgate_spigot_name: "{{ minecraft_floodgate_spigot_url | split('/') | last }}"
+
 minecraft_server_packages:
   - "{{ minecraft_java_pkg }}"
+
+minecraft_server_mem: 4G
+minecraft_server_properties: "{{ minecraft_server_instance_dir }}/server.properties"
+minecraft_server_properties_settings:
+  - regexp: "^difficulty="
+    line: "difficulty=normal"
+  - regexp: "^enforce-secure-profile="
+    line: "enforce-secure-profile=false"
+  - regexp: "^gamemode="
+    line: "gamemode=survival"
+  - regexp: "^generate-structures="
+    line: "generate-structures=true"
+  - regexp: "^op-permission-level="
+    line: "op-permission-level=3"
 
 root_group: root

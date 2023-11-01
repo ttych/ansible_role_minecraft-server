@@ -1,25 +1,31 @@
 ---
 
 - block:
-    - include: context.yml
+    - include_tasks: context.yml
 
-    - include: accounts.yml
+    - include_tasks: accounts.yml
       vars: {
         accounts_groups: "{{ minecraft_server_groups }}",
         accounts_users: "{{ minecraft_server_users }}"
       }
 
-    - include: workspace.yml
+    - include_tasks: workspace.yml
       vars:
         workspace_directories: "{{ minecraft_server_directories }}"
 
-    - include: install_packages.yml
+    - include_tasks: install_packages.yml
       vars: {
         packages: "{{ minecraft_server_packages }}",
         services: []
       }
 
-    - include: setup_minecraft_server.yml
+    - include_tasks: setup_minecraft_server.yml
+      when: minecraft_mode in ['simple', 'basic']
+
+    - include_tasks: setup_cross_minecraft_server.yml
+      when: minecraft_mode == 'cross'
+
+    - include_tasks: setup_minecraft_service.yml
 
   when: want_minecraft_server
 
