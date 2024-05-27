@@ -4,20 +4,19 @@
     - include_tasks: context.yml
 
     - include_tasks: accounts.yml
-      vars: {
-        accounts_groups: "{{ minecraft_server_groups }}",
+      vars:
+        accounts_groups: "{{ minecraft_server_groups }}"
         accounts_users: "{{ minecraft_server_users }}"
-      }
 
     - include_tasks: workspace.yml
       vars:
+        workspace_fs: "{{ minecraft_server_dir }}"
         workspace_directories: "{{ minecraft_server_directories }}"
 
     - include_tasks: install_packages.yml
-      vars: {
-        packages: "{{ minecraft_server_packages }}",
-        services: []
-      }
+      vars:
+        packages: "{{ minecraft_server_packages }}"
+        disable_services: []
 
     - include_tasks: setup_minecraft_server.yml
       when: minecraft_mode in ['simple', 'basic']
@@ -25,7 +24,9 @@
     - include_tasks: setup_cross_minecraft_server.yml
       when: minecraft_mode == 'cross'
 
-    - include_tasks: setup_minecraft_service.yml
+    - include_tasks: setup_minecraft_service_std.yml
+
+    - include_tasks: setup_minecraft_service_daemontools.yml
 
   when: want_minecraft_server
 

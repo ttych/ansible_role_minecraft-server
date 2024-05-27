@@ -34,12 +34,6 @@
         dest: "{{ daemontools_svscan_dir }}/minecraft_server_{{ minecraft_server_instance }}"
         state: link
 
-  when: has_daemontools|d(false)
-
-
-- name: start standard service
-  block:
-    - fail:
-        msg: "not implemented"
-
-  when: not has_daemontools|d(false)
+  when:
+    - has_daemontools|d(false)
+    - minecraft_server_service_mgr == 'daemontools'

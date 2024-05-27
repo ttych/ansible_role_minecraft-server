@@ -1,0 +1,14 @@
+[Unit]
+Description=Minecraft master for tmux
+
+[Service]
+Type=forking
+User={{ minecraft_server_user }}
+Group={{ minecraft_server_group }}
+WorkingDirectory={{ minecraft_server_instance_dir }}
+ExecStart=/usr/bin/tmux new-session -s master -d -c "{{ minecraft_server_dir }}"
+ExecStop=/usr/bin/tmux kill-session -t master
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

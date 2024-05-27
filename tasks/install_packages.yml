@@ -11,21 +11,24 @@
   service:
     name: "{{ item }}"
     state: stopped
-  loop: "{{ services }}"
+  loop: "{{ disable_services }}"
   when: install|d() and install.changed
 
 - name: disable default service on Linux
   service:
     name: "{{ item }}"
     enabled: no
-  loop: "{{ services }}"
+  loop: "{{ disable_services }}"
   when:
     - ansible_system == 'Linux'
     - install|d() and install.changed
 
 - name: disable default service on FreeBSD
-  include: sysrc.yml key="{{ item }}_enable" value="NO"
-  loop: "{{ services }}"
+  include_tasks: sysrc.yml
+  vars:
+    key: "{{ item }}_enable"
+    value: "NO"
+  loop: "{{ disable_services }}"
   when:
     - ansible_system == 'FreeBSD'
     - install|d() and install.changed

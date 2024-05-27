@@ -1,7 +1,5 @@
 ---
 
-minecraft_server_daemontools_dir: "{{ minecraft_server_dir }}/svscan"
-
 minecraft_server_daemontools_directories_template:
   - { path: "", owner: root, group: "{{ root_group }}", mode: "0755" }
   - { path: "/log", owner: root, group: "{{ root_group }}", mode: "0755" }

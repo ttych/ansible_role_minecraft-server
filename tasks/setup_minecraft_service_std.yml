@@ -1,0 +1,49 @@
+---
+
+- block:
+
+    - name: deploy master service
+      template:
+        src: "systemd/minecraft-master.service"
+        dest: "{{ systemd_system_lib_dir }}/minecraft-master.service"
+        owner: "root"
+        group: "{{ root_group }}"
+        mode: "0644"
+
+    - name: activate master service
+      systemd:
+        name: "minecraft-master.service"
+        enabled: yes
+        state: started
+        masked: no
+        daemon_reload: true
+
+
+    - name: deploy instance service
+      template:
+        src: "systemd/minecraft.service"
+        dest: "{{ systemd_system_lib_dir }}/{{ minecraft_server_service }}.service"
+        owner: "root"
+        group: "{{ root_group }}"
+        mode: "0644"
+      register: t_minecraft_server_service_file
+
+    - name: activate minecraft service
+      systemd:
+        name: "{{ minecraft_server_service }}.service"
+        enabled: yes
+        state: started
+        masked: no
+        daemon_reload: true
+      register: t_minecraft_server_service
+
+    - name: restart minecraft service
+      systemd:
+        name: "{{ minecraft_server_service }}.service"
+        state: restarted
+        daemon_reload: true
+      when: not t_minecraft_server_service.changed and (t_minecraft_stat_server_properties.changed or t_minecraft_server_service_file.changed)
+
+  when:
+    - ansible_service_mgr == "systemd"
+    - minecraft_server_service_mgr == 'std' or minecraft_server_service_mgr == ansible_service_mgr

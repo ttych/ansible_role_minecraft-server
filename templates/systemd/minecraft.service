@@ -1,0 +1,17 @@
+[Unit]
+Description=Minecraft Server {{ minecraft_server_instance_id }}
+After=network.target
+PartOf=minecraft-master.service
+After=minecraft-master.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User={{ minecraft_server_user }}
+Group={{ minecraft_server_group }}
+WorkingDirectory={{ minecraft_server_instance_dir }}
+ExecStart={{ minecraft_server_instance_dir }}/tmux_minecraft-server_start
+ExecStop={{ minecraft_server_instance_dir }}/tmux_minecraft-server_stop
+
+[Install]
+WantedBy=multi-user.target
