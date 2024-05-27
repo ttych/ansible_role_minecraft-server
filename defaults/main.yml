@@ -6,6 +6,10 @@ minecraft_mode: 'cross'
 minecraft_server_version: 1.20.4
 minecraft_paper_build: 496
 
+minecraft_server_motd: "A Minecraft Server"
+minecraft_server_difficulty: normal
+minecraft_server_gamemode: survival
+
 minecraft_server_user: minecraft
 minecraft_server_group: minecraft
 minecraft_server_home: "/home/{{ minecraft_server_user }}"
@@ -61,20 +65,27 @@ minecraft_floodgate_spigot_name: "floodgate-spigot.jar"
 
 minecraft_server_packages:
   - "{{ minecraft_java_pkg }}"
+  - tmux
 
 minecraft_server_mem: 4G
 minecraft_server_properties: "{{ minecraft_server_instance_dir }}/server.properties"
 minecraft_server_properties_settings:
   - regexp: "^difficulty="
-    line: "difficulty=normal"
+    line: "difficulty={{ minecraft_server_difficulty }}"
   - regexp: "^enforce-secure-profile="
     line: "enforce-secure-profile=false"
   - regexp: "^gamemode="
-    line: "gamemode=survival"
+    line: "gamemode={{ minecraft_server_gamemode }}"
   - regexp: "^generate-structures="
     line: "generate-structures=true"
   - regexp: "^op-permission-level="
     line: "op-permission-level=3"
+  - regexp: "^pvp="
+    line: "pvp=true"
+  - regexp: "^level-name="
+    line: "level-name=world"
+  - regexp: "^motd="
+    line: "motd={{ minecraft_server_motd }}"
 
 minecraft_server_service_mgr: std
 minecraft_server_service: "minecraft-{{ minecraft_server_instance_id }}"
