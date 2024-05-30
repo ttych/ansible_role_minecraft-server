@@ -3,8 +3,8 @@
 want_minecraft_server: no
 
 minecraft_mode: 'cross'
-minecraft_server_version: 1.20.4
-minecraft_paper_build: 496
+minecraft_server_version: 1.20.6
+minecraft_paper_build: 124
 
 minecraft_server_motd: "A Minecraft Server"
 minecraft_server_difficulty: normal
@@ -47,8 +47,8 @@ minecraft_server_jars:
   1.20.2: https://piston-data.mojang.com/v1/objects/5b868151bd02b41319f54c8d4061b8cae84e665c/server.jar
   1.20.6: https://piston-data.mojang.com/v1/objects/145ff0858209bcfc164859ba735d4199aafa1eea/server.jar
 
-minecraft_java_pkg: openjdk-17-jre-headless
-minecraft_java_dir: /usr/lib/jvm/java-17-openjdk-amd64
+minecraft_java_pkg: openjdk-21-jre-headless
+minecraft_java_dir: /usr/lib/jvm/java-21-openjdk-amd64
 
 minecraft_paper_url: "https://api.papermc.io/v2/projects/paper/versions/{{ minecraft_server_version }}/builds/{{ minecraft_paper_build }}/downloads/paper-{{ minecraft_server_version }}-{{ minecraft_paper_build }}.jar"
 minecraft_paper_name: "{{ minecraft_paper_url | split('/') | last }}"
