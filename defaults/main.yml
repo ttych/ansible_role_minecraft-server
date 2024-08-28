@@ -3,8 +3,8 @@
 want_minecraft_server: no
 
 minecraft_mode: 'cross'
-minecraft_server_version: 1.20.6
-minecraft_paper_build: 124
+minecraft_server_version: 1.21.1
+minecraft_paper_build: 52
 
 minecraft_server_motd: "A Minecraft Server"
 minecraft_server_difficulty: normal
@@ -46,6 +46,8 @@ minecraft_server_jars:
   1.19.2: https://piston-data.mojang.com/v1/objects/f69c284232d7c7580bd89a5a4931c3581eae1378/server.jar
   1.20.2: https://piston-data.mojang.com/v1/objects/5b868151bd02b41319f54c8d4061b8cae84e665c/server.jar
   1.20.6: https://piston-data.mojang.com/v1/objects/145ff0858209bcfc164859ba735d4199aafa1eea/server.jar
+  1.21: https://piston-data.mojang.com/v1/objects/450698d1863ab5180c25d7c804ef0fe6369dd1ba/server.jar
+  1.21.1: https://piston-data.mojang.com/v1/objects/59353fb40c36d304f2035d51e7d6e6baa98dc05c/server.jar
 
 minecraft_java_pkg: openjdk-21-jre-headless
 minecraft_java_dir: /usr/lib/jvm/java-21-openjdk-amd64
