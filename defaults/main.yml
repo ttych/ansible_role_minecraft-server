@@ -2,7 +2,7 @@
 
 want_minecraft_server: no
 
-minecraft_mode: 'cross'
+minecraft_mode: basic
 
 minecraft_server_version: 1.21.4
 
