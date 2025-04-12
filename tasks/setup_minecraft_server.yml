@@ -7,6 +7,7 @@
     mode: 0444
     owner: "{{ minecraft_server_user }}"
     group: "{{ minecraft_server_group }}"
+  notify: "restart {{ minecraft_server_service_mgr }} instance"
 
 - name: deploy eula.txt
   copy:
@@ -15,6 +16,7 @@
     owner: "{{ minecraft_server_user }}"
     group: "{{ minecraft_server_group }}"
     mode: 0644
+  notify: "restart {{ minecraft_server_service_mgr }} instance"
 
 - name: deploy minecraft-server script
   template:
@@ -23,6 +25,29 @@
     owner: "{{ minecraft_server_user }}"
     group: "{{ minecraft_server_group }}"
     mode: 0755
+  notify: "restart {{ minecraft_server_service_mgr }} instance"
+
+- name: stat server.properties
+  stat:
+    path: "{{ minecraft_server_properties }}"
+  register: t_minecraft_stat_server_properties
+
+- name: deploy config files
+  command:
+    cmd: "{{ minecraft_server_instance_dir }}/minecraft-server --initSettings"
+  changed_when: no
+  become: yes
+  become_user: "{{ minecraft_server_user }}"
+  when: not t_minecraft_stat_server_properties.stat.exists
+  notify: "restart {{ minecraft_server_service_mgr }} instance"
+
+- name: update server.properties content
+  lineinfile:
+    path: "{{ minecraft_server_properties }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop: "{{ minecraft_server_properties_settings }}"
+  notify: "restart {{ minecraft_server_service_mgr }} instance"
 
 - name: deploy tmux minecraft-server scripts
   template:
@@ -35,3 +60,4 @@
     - tmux_minecraft-server_start
     - tmux_minecraft-server_stop
     - tmux_minecraft-server_backup
+  notify: "restart {{ minecraft_server_service_mgr }} instance"

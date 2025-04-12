@@ -4,13 +4,14 @@ want_minecraft_server: no
 
 minecraft_mode: basic
 
-minecraft_server_version: 1.21.4
+minecraft_server_version: 1.21.5
 
 minecraft_paper_build: 128
 
 minecraft_server_motd: "A Minecraft Server"
 minecraft_server_difficulty: normal
 minecraft_server_gamemode: survival
+minecraft_server_port: 25565
 
 minecraft_server_user: minecraft
 minecraft_server_group: minecraft
@@ -51,6 +52,7 @@ minecraft_server_jars:
   1.21: https://piston-data.mojang.com/v1/objects/450698d1863ab5180c25d7c804ef0fe6369dd1ba/server.jar
   1.21.1: https://piston-data.mojang.com/v1/objects/59353fb40c36d304f2035d51e7d6e6baa98dc05c/server.jar
   1.21.4: https://piston-data.mojang.com/v1/objects/4707d00eb834b446575d89a61a11b5d548d8c001/server.jar
+  1.21.5: https://piston-data.mojang.com/v1/objects/e6ec2f64e6080b9b5d9b471b291c33cc7f509733/server.jar
 
 minecraft_java_pkg: openjdk-21-jre-headless
 minecraft_java_dir: /usr/lib/jvm/java-21-openjdk-amd64
@@ -91,6 +93,7 @@ minecraft_server_properties_settings:
     line: "level-name=world"
   - regexp: "^motd="
     line: "motd={{ minecraft_server_motd }}"
-
+  - regexp: "^server-port="
+    line: "server-port={{ minecraft_server_port }}"
 minecraft_server_service_mgr: std
 minecraft_server_service: "minecraft-{{ minecraft_server_instance_id }}"

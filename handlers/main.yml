@@ -1,2 +1,7 @@
 ---
-# handlers file for ansible_role_minecraft-server
+
+- name: restart std instance
+  service:
+    name: "{{ minecraft_server_service }}"
+    state: restarted
+  when: not t_minecraft_server_service.changed
