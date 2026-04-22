@@ -1,17 +1,17 @@
 ---
 
 - block:
-    - include_tasks: context.yml
+    - include_tasks: _context.yml
 
-    - include_tasks: accounts.yml
+    - include_tasks: _accounts.yml
       vars:
-        accounts_groups: "{{ minecraft_server_groups }}"
-        accounts_users: "{{ minecraft_server_users }}"
+        _accounts_groups: "{{ minecraft_server_groups }}"
+        _accounts_users: "{{ minecraft_server_users }}"
 
-    - include_tasks: workspace.yml
+    - include_tasks: _workspace.yml
       vars:
-        workspace_fs: "{{ minecraft_server_dir }}"
-        workspace_directories: "{{ minecraft_server_directories }}"
+        _workspace_fs: "{{ minecraft_server_dir }}"
+        _workspace_directories: "{{ minecraft_server_directories }}"
 
     - include_tasks: install_packages.yml
       vars:

@@ -4,7 +4,7 @@ want_minecraft_server: no
 
 minecraft_mode: basic
 
-minecraft_server_version: 1.21.5
+minecraft_server_version: 26.1.2
 
 minecraft_paper_build: 128
 
@@ -53,9 +53,12 @@ minecraft_server_jars:
   1.21.1: https://piston-data.mojang.com/v1/objects/59353fb40c36d304f2035d51e7d6e6baa98dc05c/server.jar
   1.21.4: https://piston-data.mojang.com/v1/objects/4707d00eb834b446575d89a61a11b5d548d8c001/server.jar
   1.21.5: https://piston-data.mojang.com/v1/objects/e6ec2f64e6080b9b5d9b471b291c33cc7f509733/server.jar
+  1.21.11: https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar
+  26.1.2: https://piston-data.mojang.com/v1/objects/97ccd4c0ed3f81bbb7bfacddd1090b0c56f9bc51/server.jar
 
-minecraft_java_pkg: openjdk-21-jre-headless
-minecraft_java_dir: /usr/lib/jvm/java-21-openjdk-amd64
+minecraft_java_major: 25
+minecraft_java_pkg: "openjdk-{{ minecraft_java_major }}-jre-headless"
+minecraft_java_dir: "/usr/lib/jvm/java-{{ minecraft_java_major }}-openjdk-amd64"
 
 minecraft_paper_url: "https://api.papermc.io/v2/projects/paper/versions/{{ minecraft_server_version }}/builds/{{ minecraft_paper_build }}/downloads/paper-{{ minecraft_server_version }}-{{ minecraft_paper_build }}.jar"
 minecraft_paper_name: "{{ minecraft_paper_url | split('/') | last }}"

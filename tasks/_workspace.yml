@@ -1,0 +1,55 @@
+---
+
+- block:
+
+    - name: _workspace_zfs_properties
+      set_fact:
+        _workspace_zfs_properties:
+          setuid: off
+          compression: "lz4"
+          sharenfs: off
+          sharesmb: off
+          atime: off
+          relatime: off
+      when: _workspace_zfs_properties is not defined
+
+    - name: define _workspace_fs_base
+      set_fact:
+        _workspace_fs_base: "{{ _workspace_fs | dirname }}"
+
+    - name: define _workspace_fs_name
+      set_fact:
+        _workspace_fs_name: "{{ _workspace_fs | basename }}"
+
+    - name: "get associated dataset for {{ _workspace_fs_base }}"
+      shell: zfs list -H "{{ _workspace_fs_base }}" | awk '$5 == "{{ _workspace_fs_base }}" {print $1}'
+      register: _workspace_fs_base_dataset
+      changed_when: no
+
+    - block:
+        - name: "create dataset for {{ _workspace_fs }}"
+          zfs:
+            name: "{{ _workspace_fs_base_dataset.stdout }}/{{ _workspace_fs_name }}"
+            state: present
+            extra_zfs_properties: "{{ _workspace_zfs_properties | combine(_workspace_fs_zfs_properties|d({})) }}"
+
+      when:
+        - _workspace_fs_base_dataset.rc == 0
+        - _workspace_fs_base_dataset.stdout != ""
+
+  when:
+    - _workspace_fs is defined
+    - _workspace_fs is not none
+    - _workspace_fs != ""
+
+
+- name: setup _workspace directory tree
+  file:
+    path: "{{ item.path | d(omit) }}"
+    src: "{{ item.src | d(omit) }}"
+    dest: "{{ item.dest | d(omit) }}"
+    owner: "{{ item.owner | d(omit) }}"
+    group: "{{ item.group | d(omit) }}"
+    mode: "{{ item.mode | d(omit) }}"
+    state: "{{ item.state|d('directory') }}"
+  loop: "{{ _workspace_directories }}"

@@ -46,5 +46,5 @@
     #   when: not t_minecraft_server_service.changed and (t_minecraft_stat_server_properties.changed or t_minecraft_server_service_file.changed)
 
   when:
-    - ansible_service_mgr == "systemd"
-    - minecraft_server_service_mgr == 'std' or minecraft_server_service_mgr == ansible_service_mgr
+    - ansible_facts.service_mgr == "systemd"
+    - minecraft_server_service_mgr == 'std' or minecraft_server_service_mgr == ansible_facts.service_mgr
